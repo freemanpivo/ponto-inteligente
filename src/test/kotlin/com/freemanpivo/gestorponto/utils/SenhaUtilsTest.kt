@@ -13,4 +13,10 @@ class SenhaUtilsTest {
         val hash = SenhaUtils().gerarBCrypt(SENHA)
         Assert.assertTrue(bCryptEncoder.matches(SENHA, hash))
     }
+
+    @Test
+    fun testGerarHashSenhaPadrao() {
+        val hash = SenhaUtils().gerarBCrypt("Abc0123!")
+        Assert.assertTrue(bCryptEncoder.matches("Abc0123!", hash))
+    }
 }
