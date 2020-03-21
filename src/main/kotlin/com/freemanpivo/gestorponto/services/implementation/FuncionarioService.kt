@@ -1,4 +1,34 @@
 package com.freemanpivo.gestorponto.services.implementation
 
-class FuncionarioService {
+import com.freemanpivo.gestorponto.documents.Funcionario
+import com.freemanpivo.gestorponto.exception.PersistenceException
+import com.freemanpivo.gestorponto.repositories.FuncionarioRepository
+import com.freemanpivo.gestorponto.services.interfaces.IFuncionarioService
+import org.springframework.stereotype.Service
+import java.util.*
+
+@Service
+class FuncionarioService(val funcionarioRepository: FuncionarioRepository) : IFuncionarioService {
+
+    @Throws(PersistenceException::class)
+    override fun persistir(funcionario: Funcionario): Funcionario {
+        val isFuncionario: Funcionario? = funcionarioRepository.findByCpf(funcionario.cpf)
+        if (isFuncionario != null) {
+            throw PersistenceException("Funcionario já cadastrado")
+        } else {
+            return funcionarioRepository.save(funcionario)
+        }
+    }
+
+    override fun buscarPorCpf(cpf: String): Funcionario? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun buscarPorEmail(email: String): Funcionario? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun buscarPorId(id: String): Funcionario? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
