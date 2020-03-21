@@ -16,4 +16,9 @@ class Funcionario (
         val horasTrabalhadasNoDia: Float? = 0.0f,
         val quantidadeHorasAlmoco: Float? = 0.0f,
         @Id val id: String? = null
-)
+) {
+    override fun toString(): String {
+        return nome + email + senha + cpf + perfil + empresaId + valorHora + horasTrabalhadasNoDia +
+                quantidadeHorasAlmoco + id
+    }
+}
