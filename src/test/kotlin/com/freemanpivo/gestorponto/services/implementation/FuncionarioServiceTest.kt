@@ -3,6 +3,7 @@ package com.freemanpivo.gestorponto.services.implementation
 import com.freemanpivo.gestorponto.documents.Funcionario
 import com.freemanpivo.gestorponto.enums.PerfilEnum
 import com.freemanpivo.gestorponto.exception.PersistenceException
+import com.freemanpivo.gestorponto.exception.ResourceNotFoundException
 import com.freemanpivo.gestorponto.repositories.FuncionarioRepository
 import com.freemanpivo.gestorponto.utils.SenhaUtils
 import org.junit.Assert
@@ -54,8 +55,26 @@ class FuncionarioServiceTest {
     }
 
     @Test(expected = PersistenceException::class)
-    fun whenSavingAnExistingFuncionario_thenAnExceptionIsThrown() {
+    fun whenSavingAnExistingFuncionario_thenAPersistenceExceptionIsThrown() {
         BDDMockito.given(funcionarioRepository?.findByCpf(CPF)).willReturn(montaFuncionario())
         val funcionario: Funcionario? = funcionarioService?.persistir(montaFuncionario())
     }
+
+    @Test
+    fun findPreviouslyRegisteredFuncionarioByCpf_thenReturnFuncionario() {
+        BDDMockito.given(funcionarioRepository?.findByCpf(CPF)).willReturn(montaFuncionario())
+
+        val funcionario: Funcionario? = funcionarioService?.buscarPorCpf(CPF)
+        Assert.assertNotNull(funcionario)
+    }
+
+    @Test(expected = ResourceNotFoundException::class)
+    fun findNonExistentFuncionarioByCpf_thenAnResourceNotFoundIsThrown() {
+        BDDMockito.given(funcionarioRepository?.findByCpf(CPF)).willReturn(null)
+
+        val funcionario: Funcionario? = funcionarioService?.buscarPorCpf(CPF)
+        println(funcionario.toString())
+    }
+
+    
 }
