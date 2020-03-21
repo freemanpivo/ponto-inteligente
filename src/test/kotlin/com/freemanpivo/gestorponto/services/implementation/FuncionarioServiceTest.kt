@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
+import java.util.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -39,6 +40,12 @@ class FuncionarioServiceTest {
             PerfilEnum.ROLE_USUARIO,
             ID
     )
+
+    private fun objetoFuncionarioOptional() : Optional<Funcionario> {
+        val funcionario: Funcionario = montaFuncionario()
+
+        return Optional.of(funcionario)
+    }
 
     @Before
     @Throws(Exception::class)
@@ -73,8 +80,36 @@ class FuncionarioServiceTest {
         BDDMockito.given(funcionarioRepository?.findByCpf(CPF)).willReturn(null)
 
         val funcionario: Funcionario? = funcionarioService?.buscarPorCpf(CPF)
-        println(funcionario.toString())
     }
 
-    
+    @Test
+    fun findPreviouslyRegisteredFuncionarioByEmail_thenReturnFuncionario() {
+        BDDMockito.given(funcionarioRepository?.findByEmail(EMAIL)).willReturn(montaFuncionario())
+
+        val funcionario: Funcionario? = funcionarioService?.buscarPorEmail(EMAIL)
+        Assert.assertNotNull(funcionario)
+    }
+
+    @Test(expected = ResourceNotFoundException::class)
+    fun findNonExistentFuncionarioByEmail_thenAnResourceNotFoundIsThrown() {
+        BDDMockito.given(funcionarioRepository?.findByEmail(EMAIL)).willReturn(null)
+
+        val funcionario: Funcionario? = funcionarioService?.buscarPorEmail(EMAIL)
+    }
+
+    @Test
+    fun findPreviouslyRegisteredFuncionarioById_thenReturnFuncionario() {
+        BDDMockito.given(funcionarioRepository?.findById(ID)).willReturn(objetoFuncionarioOptional())
+
+        val funcionario: Funcionario? = funcionarioService?.buscarPorId(ID)
+        Assert.assertNotNull(funcionario)
+        Assert.assertEquals(CPF, funcionario?.cpf)
+    }
+
+    @Test(expected = ResourceNotFoundException::class)
+    fun findNonExistentFuncionarioById_thenAnResourceNotFoundIsThrown() {
+        BDDMockito.given(funcionarioRepository?.findById(ID)).willReturn(Optional.empty())
+
+        val funcionario: Funcionario? = funcionarioService?.buscarPorId(ID)
+    }
 }
