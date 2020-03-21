@@ -15,7 +15,7 @@ import java.lang.Exception
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class EmpresaServiceTest () {
+class EmpresaServiceTest {
 
     // Autowired is used because Test class can only have one constructor.
     @Autowired
