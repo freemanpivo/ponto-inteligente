@@ -25,7 +25,6 @@ class EmpresaServiceTest {
     private val empresaRepository: EmpresaRepository? = null
 
     private val CNPJ = "33104195000179"
-
     private fun montaEmpresa(): Empresa = Empresa("Empresa Ltda", CNPJ,"1")
 
     @Before

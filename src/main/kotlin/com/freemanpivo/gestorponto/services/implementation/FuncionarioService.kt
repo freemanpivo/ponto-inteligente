@@ -34,9 +34,9 @@ class FuncionarioService(val funcionarioRepository: FuncionarioRepository) : IFu
         val funcionario: Optional<Funcionario> = funcionarioRepository.findById(id)
         if (funcionario.isEmpty) {
             throw ResourceNotFoundException("Funcionario Inexistente")
-        } else {
-            return funcionario.get()
         }
+
+        return funcionario.get()
     }
 
 }
