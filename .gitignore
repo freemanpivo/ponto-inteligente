@@ -4,6 +4,7 @@ gradlew
 gradlew.bat
 settings.gradle.kts
 .directory
+out/
  
 .DS_Store
 .gradle
