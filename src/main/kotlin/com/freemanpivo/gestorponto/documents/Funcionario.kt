@@ -12,10 +12,10 @@ class Funcionario (
         val cpf: String,
         val perfil: PerfilEnum,
         val empresaId: String,
-        val valorHora: Double? = 0.0,
-        val horasTrabalhadasNoDia: Float? = 0.0f,
-        val quantidadeHorasAlmoco: Float? = 0.0f,
-        @Id val id: String? = null
+        var valorHora: Double? = 0.0,
+        var horasTrabalhadasNoDia: Float? = 0.0f,
+        var quantidadeHorasAlmoco: Float? = 0.0f,
+        @Id var id: String? = null
 ) {
     override fun toString(): String {
         return nome + email + senha + cpf + perfil + empresaId + valorHora + horasTrabalhadasNoDia +
