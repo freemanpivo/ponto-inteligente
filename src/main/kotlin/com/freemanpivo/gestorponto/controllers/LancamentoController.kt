@@ -1,4 +1,4 @@
-package com.freemanpivo.gestorponto.api
+package com.freemanpivo.gestorponto.controllers
 
 import com.freemanpivo.gestorponto.dto.FuncionarioDto
 import com.freemanpivo.gestorponto.dto.LancamentoDto
@@ -15,19 +15,18 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/api/lancamentos")
 
-class LancamentoApi (val lancamentoService: LancamentoService, val funcionarioService: FuncionarioService) {
+class LancamentoController (val lancamentoService: LancamentoService, val funcionarioService: FuncionarioService) {
 
     @Value("\${paginacao.quantidade_itens_pagina}")
     val quantidadeItensPagina: Int =100
 
-    @RequestMapping(value = "/", method = arrayOf(RequestMethod.POST))
+    @PostMapping
     fun adicionar(
             @Valid @RequestBody lancamentoDto: LancamentoDto,
             resultado: BindingResult
     ) : ResponseEntity<Response<LancamentoDto>> {
-        System.out.print("OASDOASODA SD")
 
-        val resposta: Response<LancamentoDto> = Response<LancamentoDto>()
+        val resposta: Response<LancamentoDto> = Response()
         DtoValidator(funcionarioService).validarFuncionarioEfetuouLancamento(lancamentoDto, resultado)
 
         if (resultado.hasErrors()) {
@@ -40,9 +39,8 @@ class LancamentoApi (val lancamentoService: LancamentoService, val funcionarioSe
         return ResponseEntity.ok(resposta)
     }
 
-    @GetMapping("/")
+    @GetMapping
     fun listarTodos() : ResponseEntity<Response<FuncionarioDto>> {
-        System.out.print("OEEEEE")
 
         val resposta: Response<FuncionarioDto> = Response<FuncionarioDto>()
 
