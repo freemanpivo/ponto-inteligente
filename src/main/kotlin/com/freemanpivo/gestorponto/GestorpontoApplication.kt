@@ -5,6 +5,7 @@ import com.freemanpivo.gestorponto.documents.Funcionario
 import com.freemanpivo.gestorponto.enums.PerfilEnum
 import com.freemanpivo.gestorponto.repositories.EmpresaRepository
 import com.freemanpivo.gestorponto.repositories.FuncionarioRepository
+import com.freemanpivo.gestorponto.repositories.LancamentoRepository
 import com.freemanpivo.gestorponto.utils.SenhaUtils
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -13,10 +14,12 @@ import java.util.prefs.Preferences
 
 @SpringBootApplication
 class GestorpontoApplication(val empresaRepository: EmpresaRepository,
-							 val funcionarioRepository: FuncionarioRepository) : CommandLineRunner {
+							 val funcionarioRepository: FuncionarioRepository,
+							 val lancamentoRepository: LancamentoRepository) : CommandLineRunner {
 	override fun run(vararg args: String?) {
 		empresaRepository.deleteAll()
 		funcionarioRepository.deleteAll()
+		lancamentoRepository.deleteAll()
 
 		val empresa: Empresa = Empresa("Empresa1", "10443887000146")
 		empresaRepository.save(empresa)
