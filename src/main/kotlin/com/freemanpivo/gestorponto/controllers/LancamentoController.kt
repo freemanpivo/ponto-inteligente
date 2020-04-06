@@ -16,7 +16,6 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/lancamentos")
-
 class LancamentoController (val lancamentoService: LancamentoService, val funcionarioService: FuncionarioService) {
 
     @Value("\${paginacao.quantidade_itens_pagina}")
@@ -43,11 +42,17 @@ class LancamentoController (val lancamentoService: LancamentoService, val funcio
         return ResponseEntity.ok(resposta)
     }
 
-    @GetMapping
-    fun listarTodos() : ResponseEntity<Response<FuncionarioDto>> {
+    @GetMapping(value = "/{id}")
+    fun listarLancamentoPorId(@PathVariable("id") id: String) : ResponseEntity<Response<LancamentoDto>> {
+        val resposta: Response<LancamentoDto> = Response<LancamentoDto>()
+        val lancamento: Lancamento? = lancamentoService.buscarPorId(id)
 
-        val resposta: Response<FuncionarioDto> = Response<FuncionarioDto>()
+        if (lancamento == null) {
+            resposta.errors.add("Lancamento não encontrado para o id - $id")
+            return ResponseEntity.badRequest().body(resposta)
+        }
 
+        resposta.body = LancamentoMapper().converterEntidadeParaDto(lancamento)
         return ResponseEntity.ok(resposta)
     }
 }
