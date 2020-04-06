@@ -9,10 +9,11 @@ import com.freemanpivo.gestorponto.repositories.LancamentoRepository
 import com.freemanpivo.gestorponto.utils.SenhaUtils
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 import org.springframework.boot.runApplication
 import java.util.prefs.Preferences
 
-@SpringBootApplication
+@SpringBootApplication(exclude = [SecurityAutoConfiguration::class])
 class GestorpontoApplication(val empresaRepository: EmpresaRepository,
 							 val funcionarioRepository: FuncionarioRepository,
 							 val lancamentoRepository: LancamentoRepository) : CommandLineRunner {
