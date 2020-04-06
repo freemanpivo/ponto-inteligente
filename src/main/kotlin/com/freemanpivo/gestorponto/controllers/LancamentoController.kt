@@ -1,7 +1,9 @@
 package com.freemanpivo.gestorponto.controllers
 
+import com.freemanpivo.gestorponto.documents.Lancamento
 import com.freemanpivo.gestorponto.dto.FuncionarioDto
 import com.freemanpivo.gestorponto.dto.LancamentoDto
+import com.freemanpivo.gestorponto.mappers.LancamentoMapper
 import com.freemanpivo.gestorponto.response.Response
 import com.freemanpivo.gestorponto.services.implementation.FuncionarioService
 import com.freemanpivo.gestorponto.services.implementation.LancamentoService
@@ -25,17 +27,19 @@ class LancamentoController (val lancamentoService: LancamentoService, val funcio
             @Valid @RequestBody lancamentoDto: LancamentoDto,
             resultado: BindingResult
     ) : ResponseEntity<Response<LancamentoDto>> {
-
         val resposta: Response<LancamentoDto> = Response()
         DtoValidator(funcionarioService).validarFuncionarioEfetuouLancamento(lancamentoDto, resultado)
 
         if (resultado.hasErrors()) {
             for (erro in resultado.allErrors)
                 resposta.errors.add(erro.defaultMessage.toString())
-
             return ResponseEntity.badRequest().body(resposta)
         }
-        resposta.body = lancamentoDto
+
+        var lancamento: Lancamento = LancamentoMapper().converterDtoParaEntidade(lancamentoDto)
+        lancamento = lancamentoService.persistir(lancamento)
+
+        resposta.body = LancamentoMapper().converterEntidadeParaDto(lancamento)
         return ResponseEntity.ok(resposta)
     }
 

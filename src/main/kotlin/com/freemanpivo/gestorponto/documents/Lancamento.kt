@@ -9,8 +9,8 @@ import java.util.Date
 class Lancamento (
         val data: Date,
         val tipo: TipoEnum,
-        val funcionarioId: String,
         val descricao: String? = "",
         val localizacao: String? = "",
+        val funcionarioId: String,
         @Id var id: String? = null
 )
