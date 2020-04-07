@@ -6,7 +6,7 @@ import com.freemanpivo.gestorponto.enums.TipoEnum
 import java.text.SimpleDateFormat
 
 class LancamentoMapper : IEntidadeMapper<Lancamento, LancamentoDto> {
-    private val dateFormat = SimpleDateFormat("yyyy-mm-dd HH:mm:ss")
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     override fun converterEntidadeParaDto(entidade: Lancamento): LancamentoDto = LancamentoDto(
             dateFormat.format(entidade.data),

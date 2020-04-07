@@ -9,6 +9,9 @@ import com.freemanpivo.gestorponto.services.implementation.FuncionarioService
 import com.freemanpivo.gestorponto.services.implementation.LancamentoService
 import com.freemanpivo.gestorponto.validators.DtoValidator
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
@@ -55,4 +58,23 @@ class LancamentoController (val lancamentoService: LancamentoService, val funcio
         resposta.body = LancamentoMapper().converterEntidadeParaDto(lancamento)
         return ResponseEntity.ok(resposta)
     }
+
+    @GetMapping(value = "/funcionario/{funcionarioId}")
+    fun listarLancamentosPorFuncionarioId(@PathVariable("funcionarioId") funcionarioId: String,
+                                          @RequestParam(value = "pag", defaultValue = "0") pagina: Int,
+                                          @RequestParam(value = "ord", defaultValue = "id") ordem: String,
+                                          @RequestParam(value = "dir", defaultValue = "DESC") direcao: String) :
+            ResponseEntity<Response<Page<LancamentoDto>>> {
+        val resposta: Response<Page<LancamentoDto>> = Response<Page<LancamentoDto>>()
+        val configuracaoPagina: PageRequest =
+                PageRequest(pagina, quantidadeItensPagina, Sort.Direction.valueOf(direcao), ordem)
+        val lancamentos: Page<Lancamento> = lancamentoService.buscarPorFuncionarioId(funcionarioId, configuracaoPagina)
+        val lancamentosDto: Page<LancamentoDto> =
+                lancamentos.map { lancamento -> LancamentoMapper().converterEntidadeParaDto(lancamento) }
+
+        resposta.body = lancamentosDto
+        return ResponseEntity.ok(resposta)
+    }
+
+
 }
