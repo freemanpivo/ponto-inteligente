@@ -97,5 +97,19 @@ class LancamentoController (val lancamentoService: LancamentoService, val funcio
         return ResponseEntity.ok(resposta)
     }
 
+    @DeleteMapping(value = "/{id}")
+    fun removerLancamento(@PathVariable("id") id: String): ResponseEntity<Response<String>> {
+        val resposta: Response<String> = Response()
+        val lancamento: Lancamento? = lancamentoService.buscarPorId(id)
+
+        if (lancamento == null) {
+            resposta.errors.add("Erro ao remover lançamento. ID $id não encontrado.")
+            return ResponseEntity.badRequest().body(resposta)
+        }
+
+        lancamentoService.remover(id)
+        return ResponseEntity.ok(Response())
+    }
+
 
 }
