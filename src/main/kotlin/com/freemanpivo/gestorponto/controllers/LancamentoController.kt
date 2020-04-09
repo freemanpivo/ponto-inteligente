@@ -76,5 +76,26 @@ class LancamentoController (val lancamentoService: LancamentoService, val funcio
         return ResponseEntity.ok(resposta)
     }
 
+    @PutMapping(value = "/{id}")
+    fun atualizarLancamento(@PathVariable("id") id: String,
+                            @Valid @RequestBody lancamentoDto: LancamentoDto,
+                            resultado: BindingResult): ResponseEntity<Response<LancamentoDto>> {
+        val resposta: Response<LancamentoDto> = Response()
+        DtoValidator(funcionarioService).validarFuncionarioEfetuouLancamento(lancamentoDto, resultado)
+        lancamentoDto.id = id
+        var lancamento: Lancamento = LancamentoMapper().converterDtoParaEntidade(lancamentoDto)
+
+        if (resultado.hasErrors()) {
+            for (erro in resultado.allErrors)
+                resposta.errors.add(erro.defaultMessage.toString())
+            return ResponseEntity.badRequest().body(resposta)
+        }
+
+        lancamento = lancamentoService.persistir(lancamento)
+        resposta.body = LancamentoMapper().converterEntidadeParaDto(lancamento)
+
+        return ResponseEntity.ok(resposta)
+    }
+
 
 }
