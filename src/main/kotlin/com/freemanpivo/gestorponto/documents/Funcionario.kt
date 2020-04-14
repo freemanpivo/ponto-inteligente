@@ -11,7 +11,7 @@ class Funcionario (
         val senha: String,
         val cpf: String,
         val perfil: PerfilEnum,
-        val empresaId: String,
+        val empresaId: String? = null,
         var valorHora: Double? = 0.0,
         var horasTrabalhadasNoDia: Float? = 0.0f,
         var quantidadeHorasAlmoco: Float? = 0.0f,

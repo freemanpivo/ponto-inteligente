@@ -34,7 +34,7 @@ class LancamentoServiceTest {
 
     private val ID = "1"
 
-    private fun montaLancamento(): Lancamento = Lancamento(Date(), TipoEnum.INICIO_TRABALHO, ID)
+    private fun montaLancamento(): Lancamento = Lancamento(Date(), TipoEnum.INICIO_TRABALHO, id = ID, funcionarioId = ID)
     private fun montaOptionalLancamento(): Optional<Lancamento> = Optional.of(montaLancamento())
 
     @Before
